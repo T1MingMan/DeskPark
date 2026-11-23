@@ -25,6 +25,8 @@ import { online, useOnline } from '../lib/online';
 import { playSound } from '../lib/sound';
 import { settings } from '../lib/store';
 import { SettingsSheet } from './SettingsSheet';
+import type { TractorView } from '../../../../packages/engine/src/games/tractor';
+import { useTractorReplay, TractorReplayControl } from '../games/tractor/ReplayControl';
 
 const LAST_SOUND: Record<string, Parameters<typeof playSound>[0]> = {
   play: 'play',
@@ -54,7 +56,15 @@ export function TableShell({
   children: ReactNode;
 }) {
   const s = settings.use();
+  const tractorView = ctl.def.meta.id === 'tractor' ? (ctl.view as TractorView | null) : null;
+  const replay = useTractorReplay(tractorView);
   const [rules, setRules] = useState(false);
+  useEffect(() => {
+    if (ctl.def.meta.id !== 'tractor') return;
+    const open = () => setRules(true);
+    window.addEventListener('deskpark-tractor-rules', open);
+    return () => window.removeEventListener('deskpark-tractor-rules', open);
+  }, [ctl.def.meta.id]);
   const [look, setLook] = useState(false);
   const [confirmLeave, setConfirmLeave] = useState(false);
   const [emoteOpen, setEmoteOpen] = useState(false);
@@ -299,6 +309,9 @@ export function TableShell({
             <li key={i}>{r}</li>
           ))}
         </ol>
+        {ctl.def.meta.id === 'tractor' && (
+          <TractorReplayControl recorder={replay} enabled={!!tractorView} />
+        )}
       </Sheet>
 
       <SettingsSheet open={look} onClose={() => setLook(false)} />

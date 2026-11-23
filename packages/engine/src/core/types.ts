@@ -81,6 +81,12 @@ export interface GameDefinition<S = any, A = any, V = any, O = any> {
   bot(view: V, seat: Seat, rng: Rng): A;
   /** 可选：需要系统定时推进时返回动作与延迟。 */
   autoAdvance?(state: S): { delayMs: number; action: A } | null;
+  /** Runtime supplies connected, non-autoplay human seats. Freeze ALL automation for their decisions. */
+  automationBlocked?(state: S, humanSeats: Seat[]): boolean;
+  /** Optional bidding: a bot may decline once without disabling manual legal actions. */
+  automatedActionEnabled?(state: S, seat: Seat): boolean;
+  /** Opt out of ordinary turn timeouts for optional bidding/confirmation phases. */
+  humanTimeoutEnabled?(state: S, seat: Seat): boolean;
   /**
    * 可选：把某个座位的 view 整理成给大模型看的局面与候选动作。
    * 返回 null 表示这一步不需要大模型（例如"准备"），由规则电脑处理。

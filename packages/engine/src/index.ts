@@ -6,6 +6,9 @@ export * from './core/registry';
 export * from './core/ai';
 export * from './core/coach';
 
+import { tractor } from './games/tractor';
+export { tractor };
+export * as tr from './games/tractor';
 import { registerGame } from './core/registry';
 import { chess } from './games/chess';
 import { doudizhu } from './games/doudizhu';
@@ -50,6 +53,7 @@ export {
 for (const g of [
   doudizhu,
   guandan,
+  tractor,
   texas,
   sichuan,
   xiangqi,

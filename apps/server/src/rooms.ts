@@ -1,4 +1,4 @@
-import type { AnyGame, TableSeat } from '@park/engine';
+import type { AnyGame, DelegateContext, Seat, TableSeat } from '@park/engine';
 import { Table, getGame, normalizeOptions } from '@park/engine';
 import type {
   ChatMessage,
@@ -48,6 +48,13 @@ export interface ServerConfig {
   /** 房间里没有在线真人多久后删除 */
   roomIdleMs: number;
   log?: (...args: unknown[]) => void;
+  /** 服务端专用牌局思考委托（仅接收单座位脱敏 view） */
+  botDelegate?: (
+    def: AnyGame,
+    table: Table,
+    seat: Seat,
+    ctx: DelegateContext,
+  ) => Promise<unknown> | null;
 }
 
 export const DEFAULT_CONFIG: ServerConfig = {
@@ -206,13 +213,15 @@ class Room {
       auto: !!s.auto,
       connected: s.kind === 'bot' ? true : !!(s.playerId && this.hub.clientById(s.playerId)?.send),
     }));
-    this.table = new Table(this.def, tableSeats, this.options, {
+    const table: Table = new Table(this.def, tableSeats, this.options, {
       humanTimeoutMs: Math.max(this.hub.config.turnTimeoutMs, this.def.meta.turnTimeoutMs ?? 0),
       onError: (e) => this.hub.config.log?.('[table]', this.code, e),
+      delegate: (seat, ctx) => this.hub.config.botDelegate?.(this.def, table, seat, ctx) ?? null,
     });
+    this.table = table;
     this.matchNo++;
     this.status = 'playing';
-    this.unsubscribe = this.table.subscribe(() => {
+    this.unsubscribe = table.subscribe(() => {
       this.lastActive = Date.now();
       if (this.table?.isOver() && this.status === 'playing') {
         this.status = 'finished';
@@ -220,7 +229,7 @@ class Room {
       }
       this.broadcastGame();
     });
-    this.table.start();
+    table.start();
     this.broadcastRoom();
     this.broadcastGame();
     return null;

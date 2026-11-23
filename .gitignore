@@ -1,5 +1,8 @@
 node_modules/
 dist/
+dist-legacy/
+dist-legacy-tractor/
+apps/web/*-evidence/
 coverage/
 *.log
 .DS_Store

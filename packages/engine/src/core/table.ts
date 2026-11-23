@@ -128,6 +128,14 @@ export class Table<G extends AnyGame = AnyGame> {
   act(seat: Seat, action: unknown): string | null {
     if (this.disposed) return '牌桌已关闭';
     if (this.def.isOver(this.state)) return '本场已结束';
+    if ((seat === SYSTEM_SEAT || this.isAutomated(seat)) && this.automationBlocked())
+      return '等待真人确认亮主机会';
+    if (
+      seat !== SYSTEM_SEAT &&
+      this.isAutomated(seat) &&
+      this.def.automatedActionEnabled?.(this.state, seat) === false
+    )
+      return '本次自动选择已确认';
     if (seat !== SYSTEM_SEAT && !this.def.activeSeats(this.state).includes(seat)) {
       return '还没轮到你';
     }
@@ -258,6 +266,13 @@ export class Table<G extends AnyGame = AnyGame> {
     return !s || s.isBot || !!s.auto || s.connected === false;
   }
 
+  private automationBlocked(): boolean {
+    return !!this.def.automationBlocked?.(
+      this.state,
+      this.seats.flatMap((_, i) => (this.isAutomated(i) ? [] : [i])),
+    );
+  }
+
   private clearSeatTimer(seat: Seat): void {
     const t = this.seatTimers.get(seat);
     if (t) clearTimer(t);
@@ -280,7 +295,15 @@ export class Table<G extends AnyGame = AnyGame> {
       return;
     }
 
+    if (this.automationBlocked()) {
+      this.clearAllTimers();
+      for (const seat of [...this.thinkingSeats]) this.cancelThinking(seat);
+      return;
+    }
     const active = new Set(this.def.activeSeats(this.state));
+    for (const seat of active)
+      if (this.isAutomated(seat) && this.def.automatedActionEnabled?.(this.state, seat) === false)
+        active.delete(seat);
     for (const seat of [...this.seatTimers.keys()]) {
       if (!active.has(seat)) this.clearSeatTimer(seat);
     }
@@ -304,7 +327,10 @@ export class Table<G extends AnyGame = AnyGame> {
         } else {
           delay = this.config.autoDelayMs ?? 700;
         }
-      } else if (this.config.humanTimeoutMs) {
+      } else if (
+        this.config.humanTimeoutMs &&
+        this.def.humanTimeoutEnabled?.(this.state, seat) !== false
+      ) {
         delay = this.config.humanTimeoutMs;
         this.deadlines[seat] = Date.now() + delay;
       }
@@ -319,7 +345,8 @@ export class Table<G extends AnyGame = AnyGame> {
   }
 
   private runBot(seat: Seat): void {
-    if (this.disposed || this.def.isOver(this.state)) return;
+    if (this.disposed || this.def.isOver(this.state) || this.automationBlocked()) return;
+    if (this.def.automatedActionEnabled?.(this.state, seat) === false) return;
     if (!this.def.activeSeats(this.state).includes(seat)) return;
     let pending: Promise<unknown> | null = null;
     const token = ++this.tokenSeq;
@@ -365,6 +392,7 @@ export class Table<G extends AnyGame = AnyGame> {
       brokeOff ||
       !this.running ||
       this.def.isOver(this.state) ||
+      this.def.automatedActionEnabled?.(this.state, seat) === false ||
       !this.def.activeSeats(this.state).includes(seat);
     if (stale) {
       // 局面已经变了：重新排队，下一次再决策

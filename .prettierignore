@@ -1,5 +1,8 @@
 node_modules
 dist
+dist-legacy
+dist-legacy-tractor
+apps/web/*-evidence
 coverage
 package-lock.json
 apps/web/public/engines

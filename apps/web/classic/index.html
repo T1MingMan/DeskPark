@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#102c28" />
+    <meta name="apple-mobile-web-app-title" content="旧版棋牌室" />
+    <title>闲亭 · 旧版棋牌室</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #102c28;
+        color: #fcf5df;
+        font:
+          18px/1.6 -apple-system,
+          BlinkMacSystemFont,
+          'PingFang SC',
+          sans-serif;
+      }
+      .hall {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 28px 40px 24px;
+      }
+      .masthead {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 23px;
+        border-bottom: 1px solid #496057;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+      }
+      .seal {
+        margin-right: 16px;
+        padding: 1px 10px;
+        border: 1px solid #d1b97a;
+        border-radius: 12px 3px;
+        color: #f5d58d;
+        font:
+          32px/1.6 'Songti SC',
+          STSong,
+          serif;
+      }
+      .brand-name {
+        color: #f1e6cb;
+        font-size: 21px;
+        letter-spacing: 3px;
+      }
+      .edition {
+        color: #d7c696;
+        font-size: 16px;
+      }
+      .intro {
+        padding: 30px 0 25px;
+      }
+      .eyebrow {
+        margin: 0 0 7px;
+        color: #d7c696;
+        font-size: 15px;
+        letter-spacing: 3px;
+      }
+      h1 {
+        margin: 0;
+        font:
+          42px/1.35 'Songti SC',
+          STSong,
+          serif;
+        letter-spacing: 4px;
+      }
+      .intro p:last-child {
+        margin: 13px 0 0;
+        color: #cbd6cb;
+        font-size: 19px;
+      }
+      .games {
+        display: flex;
+        margin: 0 -12px;
+      }
+      .game {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        margin: 0 12px;
+        padding: 25px 28px 22px;
+        border: 1px solid #d8c9a5;
+        border-radius: 16px 4px 16px 4px;
+        background: #f5ecd7;
+        color: #203a31;
+        text-decoration: none;
+        box-shadow: 0 7px 0 #081f1c;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+      .game:hover {
+        background: #fff5df;
+      }
+      .game:active {
+        box-shadow: 0 3px 0 #081f1c;
+        -webkit-transform: translateY(3px);
+        transform: translateY(3px);
+      }
+      a:focus {
+        outline: 3px solid #f6d47d;
+        outline-offset: 5px;
+      }
+      .game-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .number {
+        color: #6b705c;
+        font:
+          15px/1.4 Georgia,
+          serif;
+        letter-spacing: 2px;
+      }
+      .mode {
+        color: #59664f;
+        font-size: 15px;
+      }
+      .table-mark {
+        display: flex;
+        align-items: center;
+        height: 91px;
+        margin: 19px 0 14px;
+        color: #203a31;
+      }
+      .playing-card {
+        display: inline-block;
+        width: 57px;
+        height: 79px;
+        margin-right: 7px;
+        padding: 3px 9px;
+        border: 1px solid #c3bba1;
+        border-radius: 6px;
+        background: #fffaf0;
+        font:
+          28px/1.2 Georgia,
+          serif;
+        box-shadow: 0 3px 0 #d9ceb3;
+      }
+      .playing-card small {
+        display: block;
+        font-size: 26px;
+      }
+      .red {
+        color: #9f3d32;
+      }
+      .pair-label {
+        margin-left: 6px;
+        color: #64705a;
+        font-size: 16px;
+        writing-mode: vertical-rl;
+        letter-spacing: 3px;
+      }
+      h2 {
+        margin: 0 0 6px;
+        font:
+          33px/1.4 'Songti SC',
+          STSong,
+          serif;
+        letter-spacing: 3px;
+      }
+      .description {
+        margin: 0 0 22px;
+        color: #52614f;
+        font-size: 17px;
+      }
+      .enter {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: auto;
+        padding-top: 13px;
+        border-top: 1px solid #c9c5a9;
+        color: #203a31;
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .arrow {
+        font-size: 25px;
+        font-weight: 400;
+      }
+      .foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 30px;
+        padding-top: 19px;
+        border-top: 1px solid #496057;
+      }
+      .foot p {
+        margin: 0;
+        color: #bdccc0;
+        font-size: 16px;
+      }
+      .modern {
+        display: inline-flex;
+        align-items: center;
+        min-height: 48px;
+        margin-left: 20px;
+        padding: 8px 16px;
+        border: 1px solid #688175;
+        border-radius: 6px;
+        color: #eee2c2;
+        text-decoration: none;
+        white-space: nowrap;
+        font-size: 16px;
+      }
+      .modern:hover {
+        background: #213e34;
+      }
+      @media (max-width: 700px) {
+        .hall {
+          padding: 22px 22px 24px;
+        }
+        .masthead {
+          padding-bottom: 18px;
+        }
+        .brand-name {
+          font-size: 18px;
+        }
+        .edition {
+          font-size: 14px;
+        }
+        .intro {
+          padding-top: 25px;
+        }
+        h1 {
+          font-size: 35px;
+        }
+        .intro p:last-child {
+          font-size: 17px;
+        }
+        .games {
+          display: block;
+          margin: 0;
+        }
+        .game {
+          width: 100%;
+          margin: 0 0 24px;
+          padding: 21px 24px;
+        }
+        .table-mark {
+          height: 70px;
+          margin: 16px 0;
+        }
+        .playing-card {
+          height: 68px;
+          width: 49px;
+          font-size: 24px;
+        }
+        .playing-card small {
+          font-size: 22px;
+        }
+        .description {
+          margin-bottom: 16px;
+        }
+        .foot {
+          display: block;
+          margin-top: 8px;
+        }
+        .modern {
+          margin: 16px 0 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hall">
+      <header class="masthead">
+        <div class="brand">
+          <span class="seal" aria-hidden="true">闲</span
+          ><span class="brand-name">闲亭 · 家庭棋牌室</span>
+        </div>
+        <span class="edition">iPad 兼容版</span>
+      </header>
+      <main>
+        <div class="intro">
+          <h1>旧版棋牌室</h1>
+        </div>
+        <nav class="games" aria-label="选择游戏">
+          <a class="game" href="/legacy/" aria-label="斗地主，进入牌桌">
+            <div class="game-top"><span class="mode">一人 · 两位电脑</span></div>
+            <div class="table-mark" aria-hidden="true">
+              <span class="playing-card">A<small>♠</small></span
+              ><span class="playing-card red">A<small>♥</small></span
+              ><span class="playing-card">A<small>♣</small></span>
+            </div>
+            <h2>斗地主</h2>
+
+            <span class="enter">进入牌桌 <span class="arrow" aria-hidden="true">→</span></span>
+          </a>
+          <a class="game" href="/legacy-tractor/" aria-label="拖拉机，进入牌桌">
+            <div class="game-top"><span class="mode">一人 · 三位电脑</span></div>
+            <div class="table-mark" aria-hidden="true">
+              <span class="playing-card red">K<small>♥</small></span
+              ><span class="playing-card red">K<small>♥</small></span
+              ><span class="playing-card red">Q<small>♥</small></span
+              ><span class="playing-card red">Q<small>♥</small></span
+              ><span class="pair-label">双副牌</span>
+            </div>
+            <h2>拖拉机</h2>
+
+            <span class="enter">进入牌桌 <span class="arrow" aria-hidden="true">→</span></span>
+          </a>
+        </nav>
+      </main>
+      <footer class="foot">
+        <a class="modern" href="/">前往新版棋牌室 →</a>
+      </footer>
+    </div>
+  </body>
+</html>

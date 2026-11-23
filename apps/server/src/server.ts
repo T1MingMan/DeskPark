@@ -6,6 +6,7 @@ import { extname, join, normalize, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { WebSocketServer } from 'ws';
 import { handleAiProxy, isAiProxyPath } from './aiProxy';
+import { createBotService, isBotDecidePath } from './botDecide';
 import { clientIp } from './net';
 import type { ServerConfig } from './rooms';
 import { DEFAULT_CONFIG, Hub } from './rooms';
@@ -113,7 +114,12 @@ function serveStatic(root: string, req: IncomingMessage, res: ServerResponse): v
 }
 
 export function startServer(opts: StartOptions) {
-  const config: ServerConfig = { ...DEFAULT_CONFIG, ...opts.config };
+  const botService = createBotService();
+  const config: ServerConfig = {
+    ...DEFAULT_CONFIG,
+    botDelegate: botService.decideForTable,
+    ...opts.config,
+  };
   const hub = new Hub(config);
   const staticDir = opts.staticDir === null ? null : resolve(opts.staticDir ?? defaultStaticDir());
 
@@ -121,6 +127,13 @@ export function startServer(opts: StartOptions) {
     if (req.url === '/healthz') {
       res.writeHead(200, { 'content-type': 'application/json' });
       res.end(JSON.stringify({ ok: true, ...hub.stats() }));
+      return;
+    }
+    if (isBotDecidePath(req.url)) {
+      botService.handleHttp(req, res).catch(() => {
+        if (!res.headersSent) res.writeHead(500);
+        res.end();
+      });
       return;
     }
     if (isAiProxyPath(req.url)) {
@@ -209,6 +222,7 @@ export function startServer(opts: StartOptions) {
     clearInterval(heartbeat);
     clearInterval(sweeper);
     hub.dispose();
+    await botService.close();
     for (const s of wss.clients) s.terminate();
     await new Promise<void>((r) => wss.close(() => r()));
     await new Promise<void>((r) => http.close(() => r()));

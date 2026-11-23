@@ -5,6 +5,7 @@ import { useEffect, useMemo, useReducer, useRef, useState, useSyncExternalStore 
 import { aiEvents, aiSpeech } from './ai/events';
 import { aiReady } from './ai/settings';
 import { aiCapable, aiTurn } from './ai/turn';
+import { serverBotTurn } from './botDecideClient';
 import { online, useOnline } from './online';
 import { storage } from './platform';
 import { navigate } from './router';
@@ -90,7 +91,7 @@ function makeTable(
     humanTimeoutMs: null,
     initialState: restore?.state,
     onError: (e) => console.warn('[table]', e),
-    delegate: (seat, ctx) => aiTurn(table, seat, ctx),
+    delegate: (seat, ctx) => aiTurn(table, seat, ctx) ?? serverBotTurn(table, seat, ctx),
   });
   return table;
 }

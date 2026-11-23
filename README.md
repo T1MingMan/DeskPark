@@ -2,11 +2,11 @@
 
 # 闲亭 · DeskPark
 
-**简洁优雅的网页桌游平台** —— 斗地主、掼蛋、德州扑克、四川麻将（血战到底）、中国象棋、国际象棋、桌游「魔法出包」「UON」「卡旦岛」「宝石商会」，单人练习或与好友联机。<br/>
-打开网页即玩，规则引擎与界面分离，可扩展自定义玩法，并为移植 App 预留了结构。
+**简洁优雅的网页桌游平台** —— 双副牌拖拉机（升级）、斗地主、掼蛋、德州扑克、四川麻将（血战到底）、中国象棋、国际象棋、桌游「魔法出包」「UON」「卡旦岛」「宝石商会」，单人练习或与好友联机。<br/>
+打开网页即玩，规则引擎与界面分离，内置服务端多核 `Worker` 专用牌局搜索引擎，并专为 iOS 12 老款 iPad 提供独立大字兼容入口。
 
-[![CI](https://github.com/solitern/DeskPark/actions/workflows/ci.yml/badge.svg)](https://github.com/solitern/DeskPark/actions/workflows/ci.yml)
-[![Docker](https://github.com/solitern/DeskPark/actions/workflows/docker.yml/badge.svg)](https://github.com/solitern/DeskPark/actions/workflows/docker.yml)
+[![CI](https://github.com/T1MingMan/DeskPark/actions/workflows/ci.yml/badge.svg)](https://github.com/T1MingMan/DeskPark/actions/workflows/ci.yml)
+[![Docker](https://github.com/T1MingMan/DeskPark/actions/workflows/docker.yml/badge.svg)](https://github.com/T1MingMan/DeskPark/actions/workflows/docker.yml)
 
 <img src="docs/screenshots/lobby.jpg" alt="大厅" width="860" />
 
@@ -14,7 +14,7 @@
 
 ## 特性
 
-- **扑克**：斗地主（叫分、全牌型、炸弹/春天倍数、记牌器）、掼蛋（两副牌、逢人配、同花顺、升级、进贡/还贡/抗贡、接风）、德州扑克（盲注与涨盲、最小加注规则、边池、摊牌比牌）。
+- **扑克**：双副牌拖拉机 / 升级（渐进亮主/反主、真人亮主机会全局冻结保护、同门混合甩牌与失败罚则、局部可见复盘导出，搭配服务端 `Worker` 整局采样搜索 `tractor-think-v3`）、斗地主（叫分、全牌型、炸弹/春天倍数、记牌器）、掼蛋（两副牌、逢人配、同花顺、升级、进贡/还贡/抗贡、接风）、德州扑克（盲注与涨盲、最小加注规则、边池、摊牌比牌）。
 - **麻将**：四川麻将 · 成都血战到底（换三张、定缺、一炮多响、过水、最后四张必胡、刮风下雨、呼叫转移、查花猪 / 查大叫 / 退税），矢量麻将牌与听牌提示。<br/>**麻将导师**：需要时点「导师」打开、随时可以关——给当前这一步出主意并讲清楚为什么：换三张换哪三张、定缺哪门、打哪张（向听数、有效进张、听哪几张还剩几张、能胡几番）、该不该碰杠胡、对手可能在做什么、哪些牌对谁绝对安全；你选中一张牌，它会告诉你这张好不好。全部在本机计算，配置了大模型还能用大白话讲解、回答追问。
 - **棋类**：中国象棋（马蹩腿、象眼、炮架、将帅不照面，长将判负，中文纵线记谱）与国际象棋（王车易位、吃过路兵、升变，逼和 / 三次重复 / 五十步 / 子力不足判和，标准记谱）；三档电脑强度（迭代加深 alpha-beta 搜索），可点选或拖动走子，和电脑下可以悔棋。<br/>**导师模式**：和电脑下棋时打开导师，每一步先在棋盘上选好，导师用 Stockfish / Fairy-Stockfish 引擎（在你的浏览器里运行，不占服务器）判断能不能走、讲清楚为什么，并在棋盘上画出对方的应着与更好的走法；没思路时可以要提示；配置了大模型还会用大白话再讲一遍，并回答你的追问。
 - **桌游**：魔法出包（2–5 人，玩法参考《出包魔法师 Abracada...What?》）——看得见别人的魔法石、猜不到自己的；还原实体版的游戏图版、计分轨道与城堡，喊咒语、连锁施法、火龙反噬与猫头鹰魔法石，点击任意魔法石查看效果，附带基于可见信息的概率推算。<br/>UON（2–8 人，四色接龙出牌，玩法同经典的四色牌游戏官方规则）——跳过、反转、+2、万能牌与 +4 质疑，只剩一张要喊「一张！」，忘了会被抓；可选计分与叠加罚牌，全部牌面为矢量手绘。<br/>卡旦岛（2–4 人，六边形拓荒经营，规则按经典拓荒桌游的基础版）——随机地图、掷骰产出、强盗、修路建村升城、发展卡、港口与玩家交易、最长道路 / 最大军队，地形与棋子全部为矢量手绘。<br/>宝石商会（2–4 人，宝石引擎构筑，规则按经典宝石收集桌游的官方规则）——拿宝石、预留与购买三级发展卡、贵族拜访，矿脉晶簇 / 工坊胸针 / 王冠三种手绘卡面与五种刻面宝石。
@@ -66,15 +66,30 @@ npm run dev
 
 ## 部署
 
+### 新旧设备独立入口与本地算力卸载
+
+- **现代版主站**：`http://<局域网IP>:8787/`（拖拉机直达 `/#/play/tractor`），支持单人与多人联机。
+- **老款 iPad（iOS 12 / Safari 12）兼容大厅**：`http://<局域网IP>:8787/classic/`，墨绿与米白大字选游戏入口（纯 HTML/CSS，零外部脚本），分别进入 `/legacy/` 斗地主与 `/legacy-tractor/` 拖拉机。
+- **服务端 `Worker` 专用牌局思考（`/api/bot/decide`）**：
+  - 针对老款 iPad 单线程 `ES5` 环境性能瓶颈，将深度搜索卸载至局域网服务器（如 Mac mini）的内联 `Worker` 线程池；
+  - 严格只读单座位脱敏 `view`，在时间预算内完成 28–32 个软硬约束信念世界采样、整局推演结算与 `CVaR` 风险厌恶扣底；
+  - 老款 iPad 通过原生 `ES5 XMLHttpRequest` 异步调用，具备 `1.2s` 硬超时、离线短路熔断与真人亮主暂停即时取消保护，失败时毫秒级回退本地轻量规则电脑，保证旧设备触控与动画流畅。
+- **老款 iPad 独立构建与验证**：
+  - 斗地主兼容端：`npm run build:legacy` · `npm run test:legacy` · `npm run deploy:legacy`
+  - 拖拉机兼容端：`npm run build:legacy-tractor` · `npm run test:legacy-tractor` · `npm run deploy:legacy-tractor`（详细家规与信息隔离边界见 [拖拉机说明](docs/tractor-rules.md)）
+  - 经典大厅发布：`python3 scripts/deploy-classic-home.py`
+
+### Docker 一键部署
+
 一个 Node 进程同时提供网页与联机服务，推荐用 Docker：
 
 ```bash
-git clone https://github.com/solitern/DeskPark.git && cd DeskPark
+git clone https://github.com/T1MingMan/DeskPark.git && cd DeskPark
 cp .env.example .env
-docker compose pull && docker compose up -d     # 打开 http://服务器IP:8787
+docker compose up -d --build     # 打开 http://服务器IP:8787
 ```
 
-- 镜像 `ghcr.io/solitern/deskpark`（amd64 / arm64），每次推送 main 自动构建、冒烟测试并发布。
+- 镜像 `ghcr.io/t1mingman/deskpark`（amd64 / arm64），每次推送 `main` 自动构建、冒烟测试并发布。
 - 绑定域名并自动 HTTPS：`docker compose -f docker-compose.yml -f deploy/docker-compose.https.yml up -d`
 - 国内网络、版本回滚、Nginx 反代、不用 Docker 的方式等，见 **[部署指南](docs/DEPLOY.md)**。
 
@@ -99,8 +114,8 @@ docs/          架构、设计、玩法扩展、App 移植、路线图
 - [App 移植方案](docs/PORTING.md) —— Capacitor 快速上架与 React Native 原生化路线
 - [路线图](docs/ROADMAP.md) · [更新日志](CHANGELOG.md) · [贡献指南](CONTRIBUTING.md)
 
-## 许可
+## 致谢与许可
 
-[MIT](LICENSE)
+本项目基于 [solitern/DeskPark](https://github.com/solitern/DeskPark) 开发演进，遵循 [MIT](LICENSE) 许可证开放源码。
 
 导师模式随附的棋类引擎是独立的第三方程序，按各自的许可证分发：[Stockfish](https://github.com/official-stockfish/Stockfish)（`apps/web/public/engines/stockfish/`，来自 npm 包 `stockfish@19.0.1`）与 [Fairy-Stockfish](https://github.com/fairy-stockfish/Fairy-Stockfish)（`apps/web/public/engines/fairy/`，来自 npm 包 `fairy-stockfish-nnue.wasm@1.1.12`），均为 GPL-3.0，许可证全文见各目录下的 `COPYING.txt`。

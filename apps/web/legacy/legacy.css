@@ -1,0 +1,1120 @@
+/* Standalone Safari 12 table: fixed card geometry, flex margins, no modern layout APIs. */
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #102c28;
+  color: #fcf5df;
+  font:
+    18px -apple-system,
+    BlinkMacSystemFont,
+    'PingFang SC',
+    sans-serif;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+button {
+  font: inherit;
+  font-weight: 600;
+  min-height: 52px;
+  padding: 10px 26px;
+  color: #203a31;
+  background: #f5ecd7;
+  border: 1px solid #fff4d7;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow:
+    0 3px 0 #0c302a,
+    0 5px 12px #082b2940;
+}
+button:disabled {
+  background: #416258;
+  border-color: #698375;
+  color: #c6d4c7;
+  box-shadow: none;
+  cursor: default;
+}
+button:focus,
+a:focus {
+  outline: 3px solid #f6d47d;
+  outline-offset: 3px;
+}
+a {
+  color: #ecdcaf;
+  text-decoration: none;
+}
+.primary {
+  background: linear-gradient(#ffe3a0, #e6bd68);
+  border-color: #ffe6a6;
+  color: #392b13;
+}
+.quiet {
+  background: transparent;
+  color: #eee2c2;
+  border-color: #79948a;
+  box-shadow: none;
+}
+.legacy-shell {
+  max-width: 1200px;
+  padding: 0 24px;
+  margin: auto;
+}
+.topbar {
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand {
+  display: flex;
+  align-items: center;
+}
+.brand-seal {
+  font-family: serif;
+  font-size: 29px;
+  border: 1px solid #d1b97a;
+  border-radius: 12px 3px;
+  color: #f5d58d;
+  padding: 3px 10px;
+  margin-right: 13px;
+}
+h1 {
+  font:
+    30px 'Songti SC',
+    STSong,
+    serif;
+  margin: 0;
+  letter-spacing: 3px;
+}
+h1 span {
+  font:
+    20px -apple-system,
+    sans-serif;
+  letter-spacing: 1px;
+  border-left: 1px solid #688175;
+  margin-left: 10px;
+  padding-left: 15px;
+}
+.brand p {
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: #c1cdbb;
+  margin: 5px 0 0;
+}
+nav {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+nav button {
+  font-size: 16px;
+  padding: 8px 16px;
+  min-height: 44px;
+  margin-right: 22px;
+}
+.table-surface {
+  position: relative;
+  border: 1px solid #9c9a65;
+  border-radius: 32px;
+  background: radial-gradient(ellipse at 50% 30%, #337463 0%, #235c4e 48%, #174637 100%);
+  box-shadow:
+    inset 0 0 0 6px #173e33,
+    inset 0 0 0 8px #b5a57740,
+    0 12px 32px #071d2360;
+}
+.game-board {
+  height: 626px;
+  overflow: hidden;
+}
+.round-strip {
+  position: absolute;
+  top: 19px;
+  left: 26px;
+  right: 26px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  color: #e9e7cb;
+}
+.round-strip b {
+  color: #ffdfa0;
+  font-size: 20px;
+}
+.bottom {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  width: 230px;
+  margin-left: -115px;
+  text-align: center;
+}
+.small-label {
+  color: #e1dfbc;
+  font-size: 14px;
+  letter-spacing: 2px;
+  display: block;
+  margin-bottom: 8px;
+}
+.bottom .pcard {
+  width: 42px;
+  height: 59px;
+  margin: 0 3px;
+}
+.opponent {
+  position: absolute;
+  top: 102px;
+  width: 160px;
+  padding: 14px;
+  border: 1px solid #8dac9250;
+  border-radius: 18px;
+  background: #123b3190;
+}
+.seat-2 {
+  left: 26px;
+}
+.seat-1 {
+  right: 26px;
+}
+.opponent.active {
+  border: 2px solid #f5d38c;
+  padding: 13px;
+  box-shadow: 0 0 0 4px #ebcb8220;
+}
+.seat-head {
+  display: flex;
+  align-items: center;
+}
+.seat-avatar {
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  line-height: 46px;
+  text-align: center;
+  color: #f4e3b7;
+  background: #456a54;
+  border: 1px solid #bcbd87;
+  border-radius: 15px;
+  font-family: 'Songti SC', serif;
+  font-size: 28px;
+  margin-right: 10px;
+}
+.seat-1 .seat-avatar {
+  background: #596448;
+}
+.seat-head h2 {
+  font-size: 18px;
+  margin: 0 0 5px;
+}
+.role-tag {
+  display: inline-block;
+  font-size: 13px;
+  line-height: 22px;
+  color: #eef0d5;
+  background: #56735d;
+  padding: 0 8px;
+  border-radius: 5px;
+}
+.role-tag.landlord {
+  color: #432d0b;
+  background: #efcf85;
+}
+.remaining {
+  margin: 12px 0 2px;
+  font-size: 16px;
+}
+.remaining strong {
+  font-size: 32px;
+  color: #ffe6a4;
+  margin: 0 3px;
+}
+.seat-score {
+  font-size: 13px;
+  color: #d4dfcb;
+  margin: 4px 0 12px;
+}
+.turn-label {
+  display: block;
+  font-size: 14px;
+  border-top: 1px solid #839a7350;
+  padding-top: 8px;
+  color: #cbd8bf;
+}
+.active .turn-label {
+  color: #ffe39c;
+}
+.table-center {
+  position: absolute;
+  top: 135px;
+  left: 205px;
+  right: 205px;
+  height: 170px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.table-watermark {
+  position: absolute;
+  top: 16px;
+  width: 100%;
+  font:
+    70px 'Songti SC',
+    serif;
+  letter-spacing: 16px;
+  color: #bcd5ae12;
+}
+.trick,
+.bidding-note {
+  position: relative;
+}
+.bidding-note {
+  color: #f7e9bd;
+  font-size: 22px;
+}
+.bidding-note p {
+  font-size: 16px;
+  color: #d8dfc3;
+}
+.played {
+  display: flex;
+  justify-content: center;
+  padding: 4px 26px 0 0;
+  min-height: 84px;
+}
+.played .pcard {
+  flex-shrink: 0;
+  width: 52px;
+  height: 74px;
+  margin-right: -26px;
+}
+.move-notes {
+  font-size: 13px;
+  min-height: 21px;
+  margin-top: 8px;
+  color: #e0dfc1;
+}
+.move-notes span {
+  display: inline-block;
+  margin: 0 6px;
+}
+.player-area {
+  position: absolute;
+  bottom: 18px;
+  left: 24px;
+  right: 24px;
+}
+.status-line {
+  text-align: center;
+  min-height: 61px;
+}
+.status-line strong {
+  display: block;
+  font-size: 24px;
+  color: #ffe7a6;
+  margin-bottom: 6px;
+}
+.status-line span {
+  display: block;
+  font-size: 16px;
+  color: #f0edda;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70px;
+}
+.actions button {
+  margin: 0 7px;
+  min-width: 106px;
+  font-size: 22px;
+}
+.actions .clear {
+  font-size: 16px;
+  min-width: 100px;
+  padding: 10px 15px;
+}
+.self-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+  height: 50px;
+  padding: 0 8px;
+}
+.self-line > div {
+  display: flex;
+  align-items: center;
+}
+.self-line strong {
+  font-size: 20px;
+  margin-right: 10px;
+}
+.self-line .role-tag {
+  margin-right: 12px;
+}
+.self-avatar {
+  width: 34px;
+  height: 34px;
+  line-height: 32px;
+  font-size: 21px;
+  border-radius: 10px;
+}
+.selection-count {
+  color: #e6d59e;
+}
+.legacy-hand {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 23px 38px 0 0;
+  min-height: 143px;
+}
+.legacy-hand button {
+  position: relative;
+  flex: 0 0 5%;
+  width: 5%;
+  height: 116px;
+  min-height: 116px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  text-align: left;
+}
+.legacy-hand button:disabled {
+  opacity: 1;
+  background: transparent;
+}
+.pcard {
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  width: 80px;
+  height: 116px;
+  background: linear-gradient(110deg, #fffdf4, #eee9d9);
+  color: #203132;
+  border: 1px solid #bbb69b;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px #10251f55;
+  overflow: hidden;
+}
+.legacy-hand .pcard {
+  width: 80px;
+  height: 116px;
+  pointer-events: none;
+}
+.legacy-hand button[aria-pressed='true'] {
+  transform: translateY(-18px);
+}
+.legacy-hand button[aria-pressed='true'] .pcard {
+  border: 3px solid #efc365;
+  background: #fff5d8;
+}
+.pcard[data-suit='H'],
+.pcard[data-suit='D'],
+.pcard--joker.is-big {
+  color: #b12f35;
+}
+.pcard__index {
+  position: absolute;
+  top: 5px;
+  left: 6px;
+  font-family: Georgia, serif;
+  line-height: 1;
+  font-size: 28px;
+}
+.pcard__rank {
+  display: block;
+  font-weight: 700;
+}
+.pcard__suit {
+  display: block;
+  width: 19px;
+  height: 20px;
+  margin-top: 4px;
+}
+.pcard__pip,
+.pcard__court {
+  position: absolute;
+  width: 39px;
+  height: 48px;
+  bottom: 9px;
+  right: 7px;
+}
+.pcard__jindex {
+  position: absolute;
+  top: 6px;
+  left: 7px;
+  width: 22px;
+  line-height: 1.15;
+  font-size: 20px;
+  font-weight: 700;
+}
+.pcard__jcenter {
+  position: absolute;
+  right: 1px;
+  bottom: 8px;
+  width: 47px;
+  height: 58px;
+}
+.bottom .pcard__index,
+.played .pcard__index {
+  font-size: 19px;
+  left: 4px;
+  top: 3px;
+}
+.bottom .pcard__suit,
+.played .pcard__suit {
+  width: 13px;
+  height: 14px;
+  margin-top: 2px;
+}
+.bottom .pcard__pip,
+.bottom .pcard__court,
+.played .pcard__pip,
+.played .pcard__court {
+  width: 24px;
+  height: 28px;
+  right: 2px;
+  bottom: 3px;
+}
+.bottom .pcard__jindex,
+.played .pcard__jindex {
+  font-size: 13px;
+  width: 14px;
+  left: 4px;
+  top: 4px;
+}
+.bottom .pcard__jcenter,
+.played .pcard__jcenter {
+  width: 28px;
+  height: 34px;
+  right: 0;
+  bottom: 1px;
+}
+.pcard--back {
+  background: #efe8d1;
+  padding: 4px;
+}
+.pcard__back {
+  height: 100%;
+  border: 1px solid #bdb083;
+  border-radius: 4px;
+  background: repeating-linear-gradient(45deg, #426b59, #426b59 3px, #527a65 3px, #527a65 5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pcard__emblem {
+  font: 22px serif;
+  color: #f0d99d;
+  border: 1px solid #b9b27d;
+  padding: 1px;
+  background: #426451;
+}
+footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #c1cdbb;
+  padding: 15px 8px;
+}
+.welcome {
+  min-height: 626px;
+  text-align: center;
+  padding: 44px 20px 30px;
+}
+.welcome-mark {
+  font:
+    20px 'Songti SC',
+    serif;
+  letter-spacing: 12px;
+  color: #e7d49e;
+  margin-bottom: 30px;
+}
+.welcome-cards .pcard {
+  width: 92px;
+  height: 128px;
+  margin: 0 -6px;
+}
+.welcome-cards .pcard:first-child {
+  transform: rotate(-12deg) translateY(8px);
+}
+.welcome-cards .pcard:last-child {
+  transform: rotate(12deg) translateY(8px);
+}
+.eyebrow {
+  font-size: 15px;
+  color: #e7dfbf;
+  margin: 30px 0 14px;
+  letter-spacing: 2px;
+}
+.welcome h2 {
+  font:
+    38px 'Songti SC',
+    serif;
+  margin: 0 0 18px;
+}
+.welcome-copy {
+  font-size: 19px;
+  line-height: 1.8;
+  margin: 0 0 24px;
+}
+.start {
+  min-width: 240px;
+  font-size: 24px;
+  min-height: 62px;
+}
+.welcome-note {
+  font-size: 14px;
+  color: #e1dcc0;
+  margin-top: 20px;
+}
+.result-panel {
+  text-align: center;
+  padding: 8px 0;
+}
+.result-panel h2 {
+  margin: 0;
+  color: #ffe6a6;
+  font-size: 25px;
+}
+.result-panel p {
+  font-size: 14px;
+  margin: 6px 0 10px;
+}
+.rules-shade {
+  position: fixed;
+  z-index: 20;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: #081e1bd9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+.rules-panel {
+  background: #f7f0de;
+  color: #223e33;
+  border-radius: 22px;
+  padding: 28px;
+  max-width: 660px;
+  max-height: 90%;
+  overflow: auto;
+}
+.rules-panel h2 {
+  margin-top: 0;
+}
+.rules-panel p {
+  line-height: 1.7;
+  font-size: 18px;
+}
+@media (min-width: 701px) and (max-width: 900px) {
+  .legacy-shell {
+    padding: 0 18px;
+  }
+  .game-board {
+    height: 880px;
+  }
+  .welcome {
+    min-height: 880px;
+    padding-top: 120px;
+  }
+  .opponent {
+    top: 124px;
+    width: 148px;
+  }
+  .seat-2 {
+    left: 20px;
+  }
+  .seat-1 {
+    right: 20px;
+  }
+  .table-center {
+    top: 160px;
+    left: 180px;
+    right: 180px;
+    height: 190px;
+  }
+  .player-area {
+    bottom: 26px;
+    left: 22px;
+    right: 22px;
+  }
+  .legacy-hand {
+    padding-right: 16px;
+    min-height: 273px;
+  }
+  .legacy-hand button {
+    flex-basis: 10%;
+    width: 10%;
+    margin-bottom: 14px;
+  }
+  .legacy-hand .pcard {
+    width: 80px;
+  }
+  .status-line {
+    margin-bottom: 10px;
+  }
+}
+@media (max-width: 700px) {
+  .legacy-shell {
+    padding: 0 10px;
+  }
+  .topbar {
+    height: 76px;
+  }
+  h1 {
+    font-size: 23px;
+  }
+  h1 span {
+    font-size: 16px;
+    margin-left: 4px;
+    padding-left: 8px;
+  }
+  .brand-seal {
+    display: none;
+  }
+  .brand p {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+  nav button {
+    margin-right: 0;
+    font-size: 14px;
+    padding: 8px;
+  }
+  nav a {
+    display: none;
+  }
+  .game-board {
+    height: 1060px;
+    border-radius: 24px;
+  }
+  .round-strip {
+    left: 18px;
+    right: 18px;
+    font-size: 13px;
+  }
+  .bottom {
+    top: 60px;
+  }
+  .opponent {
+    top: 145px;
+    width: 135px;
+    padding: 10px;
+  }
+  .opponent.active {
+    padding: 9px;
+  }
+  .seat-2 {
+    left: 17px;
+  }
+  .seat-1 {
+    right: 17px;
+  }
+  .seat-avatar {
+    width: 40px;
+    height: 40px;
+    line-height: 38px;
+  }
+  .seat-head h2 {
+    font-size: 16px;
+  }
+  .table-center {
+    top: 342px;
+    left: 28px;
+    right: 28px;
+    height: 130px;
+  }
+  .table-watermark {
+    font-size: 56px;
+  }
+  .player-area {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+  .status-line strong {
+    font-size: 22px;
+  }
+  .status-line span {
+    font-size: 14px;
+  }
+  .actions {
+    height: auto;
+    min-height: 70px;
+    flex-wrap: wrap;
+  }
+  .actions button {
+    min-width: 70px;
+    padding: 10px 13px;
+    margin: 5px;
+    font-size: 20px;
+  }
+  .actions .clear {
+    min-width: 90px;
+  }
+  .self-line {
+    font-size: 13px;
+    padding: 0;
+  }
+  .self-line .role-tag {
+    margin-right: 5px;
+  }
+  .self-avatar,
+  .selection-count {
+    display: none;
+  }
+  .legacy-hand {
+    padding-right: 15px;
+    min-height: 340px;
+  }
+  .legacy-hand button {
+    flex-basis: 20%;
+    width: 20%;
+    height: 76px;
+    min-height: 76px;
+    margin-bottom: 9px;
+  }
+  .legacy-hand .pcard {
+    width: 65px;
+    height: 86px;
+  }
+  .legacy-hand .pcard__index {
+    font-size: 23px;
+  }
+  .legacy-hand .pcard__pip,
+  .legacy-hand .pcard__court {
+    width: 28px;
+    height: 33px;
+  }
+  .legacy-hand .pcard__suit {
+    width: 15px;
+    height: 16px;
+  }
+  footer {
+    font-size: 11px;
+    display: block;
+    text-align: center;
+  }
+  footer span {
+    display: block;
+    margin-bottom: 5px;
+  }
+  .welcome {
+    min-height: 700px;
+    padding-top: 75px;
+  }
+  .welcome h2 {
+    font-size: 30px;
+  }
+  .welcome-copy {
+    font-size: 17px;
+  }
+}
+
+/* Elder-friendly table: one clear topbar; no slogans or ornamental panels. */
+.legacy-shell {
+  max-width: 1200px;
+  padding: 0 16px;
+}
+.topbar {
+  height: 64px;
+  min-height: 64px;
+}
+.brand-seal {
+  display: none;
+}
+h1 {
+  font-size: 26px;
+  letter-spacing: 1px;
+}
+h1 span {
+  font-size: 24px;
+}
+nav button {
+  font-size: 18px;
+  margin-right: 12px;
+}
+nav .lobby-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 8px 16px;
+  font-size: 22px;
+  border: 1px solid #cdbc88;
+  border-radius: 6px;
+  color: #fff1c7;
+}
+.table-surface {
+  background: #246858;
+  border: 1px solid #78907a;
+  border-radius: 10px;
+  box-shadow: none;
+}
+.game-board {
+  height: 584px;
+}
+.round-strip {
+  top: 12px;
+  left: 20px;
+  right: 20px;
+  font-size: 19px;
+}
+.bottom {
+  top: 44px;
+}
+.small-label {
+  font-size: 18px;
+}
+.opponent {
+  top: 84px;
+  width: 180px;
+  padding: 8px;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+.opponent.active {
+  border: 1px solid #ead08b;
+  padding: 7px;
+}
+.seat-2 {
+  left: 14px;
+}
+.seat-1 {
+  right: 14px;
+}
+.seat-head h2 {
+  font-size: 21px;
+}
+.seat-avatar {
+  width: 40px;
+  height: 40px;
+  line-height: 38px;
+}
+.remaining {
+  font-size: 19px;
+  margin: 8px 0;
+}
+.seat-score {
+  font-size: 18px;
+}
+.turn-label {
+  display: none;
+}
+.table-center {
+  top: 132px;
+  left: 210px;
+  right: 210px;
+  height: 122px;
+}
+.table-watermark {
+  display: none;
+}
+.bidding-note span {
+  font-size: 22px;
+}
+.player-area {
+  bottom: 10px;
+  left: 18px;
+  right: 18px;
+}
+.status-line {
+  min-height: 30px;
+  margin: 0;
+}
+.status-line strong {
+  font-size: 22px;
+}
+.status-line span {
+  font-size: 18px;
+}
+.status-line span:empty {
+  display: none;
+}
+.actions {
+  height: 62px;
+  min-height: 62px;
+}
+.actions button {
+  font-size: 22px;
+  min-height: 48px;
+  margin: 4px 8px;
+  padding: 8px 18px;
+}
+.self-line {
+  min-height: 36px;
+  margin: 0;
+  font-size: 18px;
+  padding: 0;
+}
+.legacy-hand {
+  padding: 6px 0 0;
+  min-height: 188px;
+}
+.legacy-hand button {
+  flex: 0 0 10%;
+  width: 10%;
+  height: 94px;
+  min-height: 94px;
+  padding: 2px;
+  margin: 0;
+}
+.legacy-hand .pcard {
+  width: 100%;
+  height: 90px;
+}
+.legacy-hand button[aria-pressed='true'] {
+  transform: none;
+}
+.welcome {
+  min-height: 560px;
+  padding: 60px 20px 30px;
+}
+.welcome h2 {
+  font-size: 36px;
+}
+.eyebrow,
+.welcome-copy {
+  font-size: 22px;
+}
+@media (min-width: 701px) and (max-width: 900px) {
+  .game-board {
+    height: 900px;
+  }
+  .opponent {
+    top: 120px;
+    width: 164px;
+  }
+  .table-center {
+    top: 220px;
+    left: 185px;
+    right: 185px;
+  }
+  .player-area {
+    bottom: 20px;
+  }
+  .legacy-hand {
+    min-height: 252px;
+  }
+  .legacy-hand button {
+    height: 126px;
+    min-height: 126px;
+  }
+  .legacy-hand .pcard {
+    height: 122px;
+    width: 100%;
+  }
+}
+@media (max-width: 700px) {
+  .legacy-shell {
+    padding: 0 6px;
+  }
+  .topbar {
+    height: auto;
+    min-height: 112px;
+    flex-wrap: wrap;
+    padding: 8px 0;
+  }
+  .brand {
+    width: 100%;
+    margin-bottom: 6px;
+  }
+  h1,
+  h1 span {
+    font-size: 23px;
+  }
+  nav {
+    width: 100%;
+    justify-content: space-between;
+  }
+  nav a.lobby-link {
+    display: inline-flex;
+  }
+  nav button {
+    font-size: 18px;
+  }
+  .game-board {
+    height: 1080px;
+  }
+  .round-strip {
+    left: 12px;
+    right: 12px;
+    font-size: 17px;
+  }
+  .opponent {
+    width: 145px;
+    top: 150px;
+  }
+  .seat-2 {
+    left: 6px;
+  }
+  .seat-1 {
+    right: 6px;
+  }
+  .table-center {
+    top: 350px;
+    left: 10px;
+    right: 10px;
+  }
+  .player-area {
+    left: 6px;
+    right: 6px;
+  }
+  .self-line {
+    font-size: 16px;
+  }
+  .legacy-hand {
+    min-height: 368px;
+  }
+  .legacy-hand button {
+    width: 20%;
+    flex-basis: 20%;
+    height: 92px;
+    min-height: 92px;
+  }
+  .legacy-hand .pcard {
+    height: 88px;
+  }
+  .welcome {
+    min-height: 560px;
+    padding: 45px 10px;
+  }
+}
+
+.bottom .small-label {
+  display: none;
+}
+.self-line {
+  height: 36px;
+}
+.trick .small-label {
+  line-height: 22px;
+  margin-bottom: 0;
+}
+.played {
+  min-height: 78px;
+}
+.move-notes {
+  min-height: 22px;
+  line-height: 22px;
+  margin-top: 0;
+  font-size: 16px;
+}
+@media (min-width: 901px) {
+  .table-center {
+    top: 108px;
+    height: 122px;
+  }
+}

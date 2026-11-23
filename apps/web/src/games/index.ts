@@ -36,6 +36,13 @@ const c = (id: number, suit: Card['suit'], rank: number): Card => ({ id, suit, r
 
 export const GAME_UIS: GameUI[] = [
   {
+    id: 'tractor',
+    Board: lazy(() => import('./tractor/TractorBoard')),
+    tint: ['#8b6936', '#3e4f3b'],
+    showcase: [c(1, 'S', 13), c(2, 'S', 13), c(3, 'S', 14), c(4, 'S', 14)],
+    people: '4 人 · 双升 · 无甩牌',
+  },
+  {
     id: 'doudizhu',
     Board: lazy(() => import('./doudizhu/DoudizhuBoard')),
     tint: ['#b8553f', '#7c2f25'],
